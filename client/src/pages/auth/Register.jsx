@@ -51,7 +51,9 @@ const Register = () => {
 
       toast.success('Account created successfully!');
 
-      if (user.role === 'coach') {
+      if (user.role === 'admin') {
+        navigate('/admin/dashboard');
+      } else if (user.role === 'coach') {
         navigate('/coach/dashboard');
       } else {
         navigate('/client/dashboard');
