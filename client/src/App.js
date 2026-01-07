@@ -16,6 +16,7 @@ import Courses from './pages/Courses';
 
 import ClientDashboard from './pages/client/ClientDashboard';
 import CoachDashboard from './pages/coach/CoachDashboard';
+import AdminDashboard from './pages/admin/AdminDashboard'; 
 
 import VideoCall from './components/video/VideoCall';
 
@@ -83,7 +84,25 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
+            
+            {/* Admin Routes */}
+            <Route
+              path="/admin/dashboard"
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <DashboardLayout><AdminDashboard /></DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/*"
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <DashboardLayout><AdminDashboard /></DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
+            
             {/* Video Call */}
             <Route
               path="/video/:roomId"
