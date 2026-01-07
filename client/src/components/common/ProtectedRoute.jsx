@@ -19,7 +19,9 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   }
 
   if (allowedRoles && !allowedRoles.includes(user.role)) {
-    const redirectPath = user.role === 'coach' ? '/coach/dashboard' : '/client/dashboard';
+    let redirectPath = '/client/dashboard';
+    if (user.role === 'coach') redirectPath = '/coach/dashboard';
+    if (user.role === 'admin') redirectPath = '/admin/dashboard';
     return <Navigate to={redirectPath} replace />;
   }
 
