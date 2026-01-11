@@ -134,7 +134,7 @@ exports.addLesson = async (req, res) => {
       return res.status(403).json({ message: 'Not authorized' });
     }
 
-    const { title, description, content, videoUrl, duration } = req.body;
+    const { title, description, content, videoUrl, duration, resources } = req.body;
 
     course.lessons.push({
       title,
@@ -142,6 +142,7 @@ exports.addLesson = async (req, res) => {
       content,
       videoUrl,
       duration,
+      resources: resources || [],
       order: course.lessons.length
     });
 
