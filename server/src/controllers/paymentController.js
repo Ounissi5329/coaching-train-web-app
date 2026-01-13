@@ -4,27 +4,53 @@ const User = require('../models/User');
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+const Course = require('../models/Course');
+
 exports.createPaymentIntent = async (req, res) => {
   try {
-    const { bookingId } = req.body;
+    const { bookingId, courseId } = req.body;
+    let amount, metadata;
 
-    const booking = await Booking.findById(bookingId)
-      .populate('session')
-      .populate('coach');
-
-    if (!booking) {
-      return res.status(404).json({ message: 'Booking not found' });
-    }
-
-    if (booking.client.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ message: 'Not authorized' });
+    if (bookingId) {
+      const booking = await Booking.findById(bookingId).populate('session').populate('coach');
+      if (!booking) return res.status(404).json({ message: 'Booking not found' });
+      if (booking.client.toString() !== req.user._id.toString()) return res.status(403).json({ message: 'Not authorized' });
+      
+      amount = booking.amount;
+      metadata = {
+        type: 'booking',
+        bookingId: booking._id.toString(),
+        sessionId: booking.session._id.toString(),
+        coachId: booking.coach._id.toString()
+      };
+    } else if (courseId) {
+      const course = await Course.findById(courseId);
+      if (!course) return res.status(404).json({ message: 'Course not found' });
+      
+      amount = course.price;
+      metadata = {
+        type: 'course',
+        courseId: course._id.toString(),
+        coachId: course.coach.toString()
+      };
+    } else {
+      return res.status(400).json({ message: 'Please provide bookingId or courseId' });
     }
 
     let customer;
     const user = await User.findById(req.user._id);
 
     if (user.stripeCustomerId) {
-      customer = await stripe.customers.retrieve(user.stripeCustomerId);
+      try {
+        customer = await stripe.customers.retrieve(user.stripeCustomerId);
+      } catch (e) {
+        customer = await stripe.customers.create({
+          email: user.email,
+          name: `${user.firstName} ${user.lastName}`
+        });
+        user.stripeCustomerId = customer.id;
+        await user.save();
+      }
     } else {
       customer = await stripe.customers.create({
         email: user.email,
@@ -35,21 +61,19 @@ exports.createPaymentIntent = async (req, res) => {
     }
 
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(booking.amount * 100),
+      amount: Math.round(amount * 100),
       currency: 'usd',
       customer: customer.id,
-      metadata: {
-        bookingId: booking._id.toString(),
-        sessionId: booking.session._id.toString(),
-        coachId: booking.coach._id.toString()
-      }
+      metadata: metadata
     });
 
-    booking.paymentIntentId = paymentIntent.id;
-    await booking.save();
+    if (bookingId) {
+      await Booking.findByIdAndUpdate(bookingId, { paymentIntentId: paymentIntent.id });
+    }
 
     res.json({
-      clientSecret: paymentIntent.client_secret
+      clientSecret: paymentIntent.client_secret,
+      paymentIntentId: paymentIntent.id
     });
   } catch (error) {
     console.error(error);
@@ -57,19 +81,36 @@ exports.createPaymentIntent = async (req, res) => {
   }
 };
 
+const Progress = require('../models/Progress');
+
 exports.confirmPayment = async (req, res) => {
   try {
     const { paymentIntentId } = req.body;
-
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
     if (paymentIntent.status === 'succeeded') {
-      const booking = await Booking.findOne({ paymentIntentId });
+      const { type, bookingId, courseId, coachId } = paymentIntent.metadata;
 
-      if (booking) {
-        booking.paymentStatus = 'paid';
-        booking.status = 'confirmed';
-        await booking.save();
+      if (type === 'booking') {
+        const booking = await Booking.findById(bookingId);
+        if (booking) {
+          booking.paymentStatus = 'paid';
+          booking.status = 'confirmed';
+          booking.paymentIntentId = paymentIntentId;
+          await booking.save();
+        }
+      } else if (type === 'course') {
+        const course = await Course.findById(courseId);
+        if (course && !course.enrolledStudents.includes(req.user._id)) {
+          course.enrolledStudents.push(req.user._id);
+          await course.save();
+
+          await Progress.create({
+            client: req.user._id,
+            coach: coachId,
+            course: courseId
+          });
+        }
       }
 
       res.json({ success: true, message: 'Payment confirmed' });
