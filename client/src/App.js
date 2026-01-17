@@ -16,7 +16,7 @@ import Courses from './pages/Courses';
 
 import ClientDashboard from './pages/client/ClientDashboard';
 import CoachDashboard from './pages/coach/CoachDashboard';
-import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminDashboard from './pages/admin/AdminDashboard'; 
 
 import VideoCall from './components/video/VideoCall';
 
@@ -84,7 +84,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
+            
             {/* Admin Routes */}
             <Route
               path="/admin/dashboard"
@@ -102,7 +102,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
+            
             {/* Video Call */}
             <Route
               path="/video/:roomId"
