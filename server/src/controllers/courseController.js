@@ -86,7 +86,7 @@ exports.updateCourse = async (req, res) => {
       return res.status(404).json({ message: 'Course not found' });
     }
 
-    if (course.coach.toString() !== req.user._id.toString()) {
+    if (course.coach.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
       return res.status(403).json({ message: 'Not authorized to update this course' });
     }
 
