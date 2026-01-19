@@ -1,4 +1,5 @@
 const Course = require('../models/Course');
+const User = require('../models/User');
 const Progress = require('../models/Progress');
 
 exports.createCourse = async (req, res) => {

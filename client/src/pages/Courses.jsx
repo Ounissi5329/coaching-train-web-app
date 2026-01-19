@@ -201,10 +201,10 @@ const Courses = () => {
                     </div>
                   </div>
 
-                  <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
-                    <div>
+                  <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-end">
+                    {/* <div>
                       <span className="text-2xl font-bold text-gray-900">${course.price}</span>
-                    </div>
+                    </div> */}
                     <span className="text-primary-600 font-medium text-sm group-hover:underline">
                       View Course →
                     </span>

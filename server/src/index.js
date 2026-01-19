@@ -11,7 +11,7 @@ const courseRoutes = require('./routes/courses');
 const sessionRoutes = require('./routes/sessions');
 const bookingRoutes = require('./routes/bookings');
 const messageRoutes = require('./routes/messages');
-const paymentRoutes = require('./routes/payments');
+// const paymentRoutes = require('./routes/payments');
 const mediaRoutes = require("./routes/media");
 const commentRoutes = require("./routes/comments");
 
@@ -40,7 +40,7 @@ app.use('/api/courses', courseRoutes);
 app.use('/api/sessions', sessionRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/messages', messageRoutes);
-app.use('/api/payments', paymentRoutes);
+// app.use('/api/payments', paymentRoutes);
 app.use("/api/media", mediaRoutes);
 app.use("/api/comments", commentRoutes);
 

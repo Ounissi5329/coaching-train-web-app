@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { courseAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from '../components/common/LoadingSpinner';
-import PaymentModal from './components/payment/PaymentModal';
+// import PaymentModal from './components/payment/PaymentModal';
 import CommentSection from '../components/course/CommentSection';
 import {
   AcademicCapIcon,,
@@ -21,7 +21,7 @@ const CourseDetails = () => {
   const { user, isAuthenticated } = useAuth();
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+  // const [isPaymentOpen, setIsPaymentOpen] = useState(false);
   const [expandedLesson, setExpandedLesson] = useState(null);
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const CourseDetails = () => {
   if (loading) return <LoadingSpinner size="lg" className="mt-20" />;
   if (!course) return <div className="text-center py-20">Course not found</div>;
 
-  const isEnrolled = user && course.enrolledStudents?.includes(user._id);
+  const isEnrolled = user && course.enrolledStudents?.some(s => (s._id || s) === user._id);
   const isCoach = user && course.coach?._id === user._id;
   const isAdmin = user && user.role === 'admin';
   const hasAccess = isEnrolled || isCoach || isAdmin;
@@ -149,23 +149,37 @@ const CourseDetails = () => {
             </div>
           </div>
 
-          {/* Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky top-8">
-              <div className="text-3xl font-bold text-gray-900 mb-6">${course.price}</div>
-              
-              {!hasAccess ? (
-                <button
-                  onClick={() => isAuthenticated ? setIsPaymentOpen(true) : window.location.href='/login'}
-                  className="w-full btn-primary py-4 text-lg mb-4"
-                >
-                  Enroll Now
-                </button>
-              ) : (
-                <div className="w-full bg-green-50 text-green-700 py-4 rounded-xl text-center font-bold mb-4 border border-green-100">
-                  You have access to this course
-                </div>
-              )}
+	          {/* Sidebar */}
+	          <div className="lg:col-span-1">
+	            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky top-8">
+	              {/* <div className="text-3xl font-bold text-gray-900 mb-6">${course.price}</div> */}
+	              
+	              {!hasAccess ? (
+	                <button
+	                  onClick={() => {
+                      if (!isAuthenticated) {
+                        window.location.href='/login';
+                      } else {
+                        // Handle free enrollment
+                        courseAPI.enrollCourse(course._id)
+                          .then(() => {
+                            window.location.reload();
+                          })
+                          .catch(err => {
+                            console.error(err);
+                            alert('Failed to enroll');
+                          });
+                      }
+                    }}
+	                  className="w-full btn-primary py-4 text-lg mb-4"
+	                >
+	                  Enroll for Free
+	                </button>
+	              ) : (
+	                <div className="w-full bg-green-50 text-green-700 py-4 rounded-xl text-center font-bold mb-4 border border-green-100">
+	                  You have access to this course
+	                </div>
+	              )}
 
               <div className="space-y-4 text-sm text-gray-600">
                 <div className="flex items-center gap-3">
@@ -203,7 +217,7 @@ const CourseDetails = () => {
         </div>
       </div>
 
-      <PaymentModal
+      {/* <PaymentModal
         isOpen={isPaymentOpen}
         onClose={() => setIsPaymentOpen(false)}
         type="course"
@@ -212,7 +226,7 @@ const CourseDetails = () => {
           amount: course.price,
           title: course.title
         }}
-      />
+      /> */}
     </div>
   );
 };
