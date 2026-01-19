@@ -6,7 +6,7 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 // import PaymentModal from './components/payment/PaymentModal';
 import CommentSection from '../components/course/CommentSection';
 import {
-  AcademicCapIcon,,
+  AcademicCapIcon,
   ClockIcon,
   UserGroupIcon,
   PlayIcon,
@@ -149,37 +149,34 @@ const CourseDetails = () => {
             </div>
           </div>
 
-	          {/* Sidebar */}
-	          <div className="lg:col-span-1">
-	            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky top-8">
-	              {/* <div className="text-3xl font-bold text-gray-900 mb-6">${course.price}</div> */}
-	              
-	              {!hasAccess ? (
-	                <button
-	                  onClick={() => {
-                      if (!isAuthenticated) {
-                        window.location.href='/login';
-                      } else {
-                        // Handle free enrollment
-                        courseAPI.enrollCourse(course._id)
-                          .then(() => {
-                            window.location.reload();
-                          })
-                          .catch(err => {
-                            console.error(err);
-                            alert('Failed to enroll');
-                          });
-                      }
-                    }}
-	                  className="w-full btn-primary py-4 text-lg mb-4"
-	                >
-	                  Enroll for Free
-	                </button>
-	              ) : (
-	                <div className="w-full bg-green-50 text-green-700 py-4 rounded-xl text-center font-bold mb-4 border border-green-100">
-	                  You have access to this course
-	                </div>
-	              )}
+          {/* Sidebar */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky top-8">
+              {!hasAccess ? (
+                <button
+                  onClick={() => {
+                    if (!isAuthenticated) {
+                      window.location.href='/login';
+                    } else {
+                      courseAPI.enrollCourse(course._id)
+                        .then(() => {
+                          window.location.reload();
+                        })
+                        .catch(err => {
+                          console.error(err);
+                          alert('Failed to enroll');
+                        });
+                    }
+                  }}
+                  className="w-full btn-primary py-4 text-lg mb-4"
+                >
+                  Enroll for Free
+                </button>
+              ) : (
+                <div className="w-full bg-green-50 text-green-700 py-4 rounded-xl text-center font-bold mb-4 border border-green-100">
+                  You have access to this course
+                </div>
+              )}
 
               <div className="space-y-4 text-sm text-gray-600">
                 <div className="flex items-center gap-3">
