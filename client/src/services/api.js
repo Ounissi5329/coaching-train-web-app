@@ -100,4 +100,19 @@ export const paymentAPI = {
   getPaymentHistory: (params) => api.get('/payments/history', { params })
 };
 
+export const mediaAPI = {
+  getMedia: () => api.get('/media'),
+  uploadMedia: (formData) => api.post('/media/upload', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }),
+  deleteMedia: (id) => api.delete(`/media/${id}`)
+};
+
+export const commentAPI = {
+  getComments: (courseId, lessonId) => api.get(`/comments/${courseId}${lessonId ? `?lessonId=${lessonId}` : ''}`),
+  createComment: (data) => api.post('/comments', data),
+  reactToComment: (id, type) => api.post(`/comments/${id}/react`, { type }),
+  deleteComment: (id) => api.delete(`/comments/${id}`)
+};
+
 export default api;

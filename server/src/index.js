@@ -12,7 +12,8 @@ const sessionRoutes = require('./routes/sessions');
 const bookingRoutes = require('./routes/bookings');
 const messageRoutes = require('./routes/messages');
 const paymentRoutes = require('./routes/payments');
-const mediaRoutes = require('./routes/media');
+const mediaRoutes = require("./routes/media");
+const commentRoutes = require("./routes/comments");
 
 const app = express();
 const server = http.createServer(app);
@@ -40,7 +41,8 @@ app.use('/api/sessions', sessionRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/payments', paymentRoutes);
-app.use('/api/media', mediaRoutes);
+app.use("/api/media", mediaRoutes);
+app.use("/api/comments", commentRoutes);
 
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);

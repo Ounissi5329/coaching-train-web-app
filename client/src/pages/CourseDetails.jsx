@@ -3,9 +3,10 @@ import { useParams, Link } from 'react-router-dom';
 import { courseAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from '../components/common/LoadingSpinner';
-import PaymentModal from '../components/payment/PaymentModal';
+import PaymentModal from './components/payment/PaymentModal';
+import CommentSection from '../components/course/CommentSection';
 import {
-  AcademicCapIcon,
+  AcademicCapIcon,,
   ClockIcon,
   UserGroupIcon,
   PlayIcon,
@@ -98,6 +99,9 @@ const CourseDetails = () => {
                         <div className="p-4 bg-gray-50 border-t border-gray-100 space-y-4">
                           {lesson.content && <p className="text-gray-700 text-sm whitespace-pre-wrap">{lesson.content}</p>}
                           
+                          {/* Lesson-specific Discussion */}
+                          <CommentSection courseId={course._id} lessonId={lesson._id} />
+                          
                           {lesson.videoUrl && (
                             <a href={lesson.videoUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary-600 hover:text-primary-700 font-medium text-sm">
                               <PlayIcon className="w-5 h-5" />
@@ -138,6 +142,9 @@ const CourseDetails = () => {
                     </div>
                   ))}
                 </div>
+
+                {/* Course-wide Discussion */}
+                <CommentSection courseId={course._id} />
               </div>
             </div>
           </div>
