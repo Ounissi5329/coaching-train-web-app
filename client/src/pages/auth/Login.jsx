@@ -29,11 +29,11 @@ const Login = () => {
       toast.success('Welcome back!');
       
       if (user.role === 'coach') {
-        navigate('/coach/dashboard');
+        navigate('/instructor/dashboard');
       } else if (user.role === 'admin') {
         navigate('/admin/dashboard');
       } else {
-        navigate(from === '/' ? '/client/dashboard' : from);
+        navigate(from === '/' ? '/student/dashboard' : from);
       }
     } catch (error) {
       toast.error(error.response?.data?.message || 'Login failed');

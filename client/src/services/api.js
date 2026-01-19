@@ -65,7 +65,9 @@ export const courseAPI = {
     headers: { 'Content-Type': 'multipart/form-data' }
   }),
   assignCoach: (id, coachId) => api.put(`/courses/${id}/assign-coach`, { coachId }),
-  manageEnrollment: (id, clientId, action) => api.put(`/courses/${id}/manage-enrollment`, { clientId, action })
+  manageEnrollment: (id, clientId, action) => api.put(`/courses/${id}/manage-enrollment`, { clientId, action }),
+  markLessonCompleted: (courseId, lessonId) => api.post(`/courses/${courseId}/lessons/${lessonId}/complete`),
+  getCourseProgress: (courseId) => api.get(`/courses/${courseId}/progress`)
 };
 
 export const sessionAPI = {

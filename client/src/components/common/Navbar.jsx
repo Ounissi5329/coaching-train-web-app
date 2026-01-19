@@ -20,9 +20,9 @@ const Navbar = () => {
   };
 
   const getDashboardLink = () => {
-    if (user?.role === 'coach') return '/coach/dashboard';
+    if (user?.role === 'coach') return '/instructor/dashboard';
     if (user?.role === 'admin') return '/admin/dashboard';
-    return '/client/dashboard';
+    return '/student/dashboard';
   };
 
   return (
@@ -39,7 +39,7 @@ const Navbar = () => {
 
             <div className="hidden md:ml-10 md:flex md:space-x-8">
               <Link to="/coaches" className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                Find Coaches
+                Find Instructors
               </Link>
               <Link to="/courses" className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium">
                 Courses
@@ -123,7 +123,7 @@ const Navbar = () => {
         <div className="md:hidden bg-white border-t border-gray-100">
           <div className="px-4 py-3 space-y-2">
             <Link to="/coaches" className="block px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg">
-              Find Coaches
+                Find Instructors
             </Link>
             <Link to="/courses" className="block px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg">
               Courses

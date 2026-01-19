@@ -273,3 +273,82 @@ exports.manageEnrollment = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+exports.markLessonCompleted = async (req, res) => {
+  try {
+    const { courseId, lessonId } = req.params;
+    const userId = req.user._id;
+
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+
+    let progress = await Progress.findOne({ client: userId, course: courseId });
+    if (!progress) {
+      progress = await Progress.create({
+        client: userId,
+        coach: course.coach,
+        course: courseId,
+        completedLessons: []
+      });
+    }
+
+    const isAlreadyCompleted = progress.completedLessons.some(
+      (cl) => cl.lessonId.toString() === lessonId
+    );
+
+    if (!isAlreadyCompleted) {
+      progress.completedLessons.push({ lessonId, completedAt: new Date() });
+      
+      // Calculate overall progress
+      const totalLessons = course.lessons.length;
+      const completedCount = progress.completedLessons.length;
+      progress.overallProgress = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0;
+      
+      await progress.save();
+    }
+
+    res.json(progress);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+exports.getCourseProgress = async (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const userId = req.user._id;
+
+    const progress = await Progress.findOne({ client: userId, course: courseId });
+    if (!progress) {
+      return res.json({ overallProgress: 0, completedLessons: [] });
+    }
+
+    res.json(progress);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+exports.getEnrolledCoursesWithProgress = async (req, res) => {
+  try {
+    const courses = await Course.find({
+      enrolledStudents: req.user._id
+    }).populate('coach', 'firstName lastName avatar');
+
+    const coursesWithProgress = await Promise.all(courses.map(async (course) => {
+      const progress = await Progress.findOne({ client: req.user._id, course: course._id });
+      return {
+        ...course.toObject(),
+        progress: progress ? progress.overallProgress : 0
+      };
+    }));
+
+    res.json(coursesWithProgress);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};

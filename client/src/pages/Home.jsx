@@ -12,17 +12,17 @@ const features = [
   {
     icon: CalendarIcon,
     title: 'Easy Scheduling',
-    description: 'Book sessions with coaches based on their availability. Manage your calendar effortlessly.'
+    description: 'Book sessions with instructors based on their availability. Manage your calendar effortlessly.'
   },
   {
     icon: VideoCameraIcon,
     title: 'Video Sessions',
-    description: 'Connect face-to-face with your coach through high-quality video calls.'
+    description: 'Connect face-to-face with your instructor through high-quality video calls.'
   },
   {
     icon: AcademicCapIcon,
     title: 'Online Courses',
-    description: 'Access comprehensive courses created by expert coaches at your own pace.'
+    description: 'Access comprehensive courses created by expert instructors at your own pace.'
   },
   {
     icon: ChartBarIcon,
@@ -61,10 +61,10 @@ const Home = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-4xl lg:text-5xl font-bold leading-tight">
-                Transform Your Life with Expert Coaching
+                Transform Your Life with Expert Instruction
               </h1>
               <p className="mt-6 text-lg text-primary-100">
-                Connect with certified coaches who can help you achieve your personal and professional goals. 
+                Connect with certified instructors who can help you achieve your personal and professional goals. 
                 Book sessions, access courses, and track your progress all in one place.
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
@@ -72,13 +72,13 @@ const Home = () => {
                   Get Started Free
                 </Link>
                 <Link to="/coaches" className="px-6 py-3 border-2 border-white text-white rounded-lg font-semibold hover:bg-white/10 transition-colors">
-                  Browse Coaches
+                  Browse Instructors
                 </Link>
               </div>
               <div className="mt-8 flex items-center gap-6 text-sm text-primary-100">
                 <div className="flex items-center gap-2">
                   <CheckCircleIcon className="w-5 h-5" />
-                  <span>1000+ Expert Coaches</span>
+                  <span>1000+ Expert Instructors</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircleIcon className="w-5 h-5" />
@@ -137,22 +137,22 @@ const Home = () => {
               <div className="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-2xl font-bold text-white">1</span>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Find Your Coach</h3>
-              <p className="text-gray-600">Browse our network of certified coaches and find the perfect match for your goals.</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Find Your Instructor</h3>
+              <p className="text-gray-600">Browse our network of certified instructors and find the perfect match for your goals.</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-2xl font-bold text-white">2</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Book a Session</h3>
-              <p className="text-gray-600">Schedule sessions at times that work for you. Pay securely online.</p>
+              <p className="text-gray-600">Schedule sessions at times that work for you.</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-2xl font-bold text-white">3</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Achieve Your Goals</h3>
-              <p className="text-gray-600">Work with your coach to reach your full potential. Track your progress along the way.</p>
+              <p className="text-gray-600">Work with your instructor to reach your full potential. Track your progress along the way.</p>
             </div>
           </div>
         </div>
@@ -200,7 +200,7 @@ const Home = () => {
               Get Started Free
             </Link>
             <Link to="/become-coach" className="px-8 py-3 border-2 border-white text-white rounded-lg font-semibold hover:bg-white/10 transition-colors">
-              Become a Coach
+              Become an Instructor
             </Link>
           </div>
         </div>

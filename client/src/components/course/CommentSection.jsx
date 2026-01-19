@@ -153,9 +153,9 @@ const CommentSection = ({ courseId, lessonId }) => {
                 <span className="font-bold text-gray-900 text-sm">
                   {comment.user?.firstName} {comment.user?.lastName}
                 </span>
-                <span className="ml-2 px-2 py-0.5 bg-gray-200 text-gray-600 rounded text-[10px] uppercase font-bold">
-                  {comment.user?.role}
-                </span>
+	                <span className="ml-2 px-2 py-0.5 bg-gray-200 text-gray-600 rounded text-[10px] uppercase font-bold">
+	                  {comment.user?.role === 'coach' ? 'Instructor' : comment.user?.role === 'client' ? 'Student' : comment.user?.role}
+	                </span>
               </div>
               <span className="text-xs text-gray-500">
                 {formatDistanceToNow(new Date(comment.createdAt))} ago

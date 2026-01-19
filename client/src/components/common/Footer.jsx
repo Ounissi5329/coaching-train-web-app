@@ -14,17 +14,17 @@ const Footer = () => {
               <span className="text-xl font-bold text-white">CoachHub</span>
             </div>
             <p className="text-sm text-gray-400">
-              Connect with expert coaches to achieve your personal and professional goals.
+              Connect with expert instructors to achieve your personal and professional goals.
             </p>
           </div>
 
           <div>
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Platform</h3>
             <ul className="space-y-2">
-              <li><Link to="/coaches" className="text-sm hover:text-white">Find Coaches</Link></li>
+              <li><Link to="/coaches" className="text-sm hover:text-white">Find Instructors</Link></li>
               <li><Link to="/courses" className="text-sm hover:text-white">Browse Courses</Link></li>
-              <li><Link to="/pricing" className="text-sm hover:text-white">Pricing</Link></li>
-              <li><Link to="/become-coach" className="text-sm hover:text-white">Become a Coach</Link></li>
+              {/* <li><Link to="/pricing" className="text-sm hover:text-white">Pricing</Link></li> */}
+              <li><Link to="/become-coach" className="text-sm hover:text-white">Become an Instructor</Link></li>
             </ul>
           </div>
 

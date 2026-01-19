@@ -181,7 +181,7 @@ const ClientDashboard = () => {
             ) : (
               <div className="space-y-4">
                 {enrolledCourses.slice(0, 3).map((course) => (
-                  <div key={course._id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
+                  <Link to={`/courses/${course._id}`} key={course._id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
                     {course.thumbnail ? (
                       <img src={course.thumbnail} alt="" className="w-16 h-12 rounded-lg object-cover" />
                     ) : (
@@ -197,11 +197,11 @@ const ClientDashboard = () => {
                     </div>
                     <div className="text-right">
                       <div className="w-24 h-2 bg-gray-200 rounded-full">
-                        <div className="h-full bg-primary-600 rounded-full" style={{ width: '30%' }}></div>
+                        <div className="h-full bg-primary-600 rounded-full" style={{ width: `${course.progress || 0}%` }}></div>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">30% complete</p>
+                      <p className="text-xs text-gray-500 mt-1">{course.progress || 0}% complete</p>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             )}

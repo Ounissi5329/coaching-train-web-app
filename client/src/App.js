@@ -51,9 +51,9 @@ function App() {
             <Route path="/courses" element={<PublicLayout><Courses /></PublicLayout>} />
             <Route path="/courses/:id" element={<PublicLayout><CourseDetails /></PublicLayout>} />
 
-            {/* Client Routes */}
+            {/* Student Routes */}
             <Route
-              path="/client/dashboard"
+              path="/student/dashboard"
               element={
                 <ProtectedRoute allowedRoles={['client']}>
                   <DashboardLayout><ClientDashboard /></DashboardLayout>
@@ -61,7 +61,7 @@ function App() {
               }
             />
             <Route
-              path="/client/*"
+              path="/student/*"
               element={
                 <ProtectedRoute allowedRoles={['client']}>
                   <DashboardLayout><ClientDashboard /></DashboardLayout>
@@ -69,9 +69,9 @@ function App() {
               }
             />
 
-            {/* Coach Routes */}
+            {/* Instructor Routes */}
             <Route
-              path="/coach/dashboard"
+              path="/instructor/dashboard"
               element={
                 <ProtectedRoute allowedRoles={['coach']}>
                   <DashboardLayout><CoachDashboard /></DashboardLayout>
@@ -79,7 +79,7 @@ function App() {
               }
             />
             <Route
-              path="/coach/*"
+              path="/instructor/*"
               element={
                 <ProtectedRoute allowedRoles={['coach']}>
                   <DashboardLayout><CoachDashboard /></DashboardLayout>

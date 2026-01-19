@@ -19,24 +19,24 @@ const Sidebar = () => {
   const location = useLocation();
 
   const clientLinks = [
-    { name: 'Dashboard', href: '/client/dashboard', icon: HomeIcon },
-    { name: 'Find Coaches', href: '/client/coaches', icon: UserGroupIcon },
-    { name: 'My Bookings', href: '/client/bookings', icon: CalendarIcon },
-    { name: 'My Courses', href: '/client/courses', icon: AcademicCapIcon },
-    { name: 'Messages', href: '/client/messages', icon: ChatBubbleLeftRightIcon },
-    { name: 'Progress', href: '/client/progress', icon: ChartBarIcon },
-    { name: 'Settings', href: '/client/settings', icon: Cog6ToothIcon }
+    { name: 'Dashboard', href: '/student/dashboard', icon: HomeIcon },
+    { name: 'Find Instructors', href: '/student/coaches', icon: UserGroupIcon },
+    { name: 'My Bookings', href: '/student/bookings', icon: CalendarIcon },
+    { name: 'My Courses', href: '/student/courses', icon: AcademicCapIcon },
+    { name: 'Messages', href: '/student/messages', icon: ChatBubbleLeftRightIcon },
+    { name: 'Progress', href: '/student/progress', icon: ChartBarIcon },
+    { name: 'Settings', href: '/student/settings', icon: Cog6ToothIcon }
   ];
 
   const coachLinks = [
-    { name: 'Dashboard', href: '/coach/dashboard', icon: HomeIcon },
-    { name: 'Sessions', href: '/coach/sessions', icon: VideoCameraIcon },
-    { name: 'Bookings', href: '/coach/bookings', icon: CalendarIcon },
-    { name: 'Courses', href: '/coach/courses', icon: BookOpenIcon },
-    { name: 'Clients', href: '/coach/clients', icon: UserGroupIcon },
-    { name: 'Messages', href: '/coach/messages', icon: ChatBubbleLeftRightIcon },
-    { name: 'Earnings', href: '/coach/earnings', icon: CreditCardIcon },
-    { name: 'Settings', href: '/coach/settings', icon: Cog6ToothIcon }
+    { name: 'Dashboard', href: '/instructor/dashboard', icon: HomeIcon },
+    { name: 'Sessions', href: '/instructor/sessions', icon: VideoCameraIcon },
+    { name: 'Bookings', href: '/instructor/bookings', icon: CalendarIcon },
+    { name: 'Courses', href: '/instructor/courses', icon: BookOpenIcon },
+    { name: 'Students', href: '/instructor/clients', icon: UserGroupIcon },
+    { name: 'Messages', href: '/instructor/messages', icon: ChatBubbleLeftRightIcon },
+    { name: 'Earnings', href: '/instructor/earnings', icon: CreditCardIcon },
+    { name: 'Settings', href: '/instructor/settings', icon: Cog6ToothIcon }
   ];
 
   const links = user?.role === 'coach' ? coachLinks : clientLinks;
@@ -57,7 +57,7 @@ const Sidebar = () => {
             )}
             <div>
               <p className="font-medium text-gray-900">{user?.firstName} {user?.lastName}</p>
-              <p className="text-sm text-gray-500 capitalize">{user?.role}</p>
+              <p className="text-sm text-gray-500 capitalize">{user?.role === 'coach' ? 'Instructor' : user?.role === 'client' ? 'Student' : user?.role}</p>
             </div>
           </div>
         </div>

@@ -54,9 +54,9 @@ const Register = () => {
       if (user.role === 'admin') {
         navigate('/admin/dashboard');
       } else if (user.role === 'coach') {
-        navigate('/coach/dashboard');
+        navigate('/instructor/dashboard');
       } else {
-        navigate('/client/dashboard');
+        navigate('/student/dashboard');
       }
     } catch (error) {
       toast.error(error.response?.data?.message || 'Registration failed');
@@ -204,7 +204,7 @@ const Register = () => {
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  <div className="font-medium">Find a Coach</div>
+                  <div className="font-medium">Find an Instructor</div>
                   <div className="text-sm text-gray-500 mt-1">Book sessions & courses</div>
                 </button>
                 <button
@@ -216,7 +216,7 @@ const Register = () => {
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  <div className="font-medium">Become a Coach</div>
+                  <div className="font-medium">Become an Instructor</div>
                   <div className="text-sm text-gray-500 mt-1">Offer your services</div>
                 </button>
               </div>

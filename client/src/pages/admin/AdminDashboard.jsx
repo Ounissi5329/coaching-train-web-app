@@ -122,7 +122,7 @@ const AdminDashboard = () => {
   const handleManageEnrollment = async (courseId, clientId, action) => {
     try {
       await courseAPI.manageEnrollment(courseId, clientId, action);
-      toast.success(action === 'add' ? 'Client enrolled' : 'Client unenrolled');
+toast.success(action === 'add' ? 'Student enrolled' : 'Student unenrolled');
       fetchData();
     } catch (error) {
       toast.error('Failed to update enrollment');
@@ -233,7 +233,7 @@ const AdminDashboard = () => {
                               onChange={(e) => handleAssignCoach(course._id, e.target.value)}
                               className="text-xs font-medium bg-transparent focus:outline-none"
                             >
-                              <option value="">Assign Coach</option>
+<option value="">Assign Instructor</option>
                               {coaches.map(coach => (
                                 <option key={coach._id} value={coach._id}>{coach.firstName} {coach.lastName}</option>
                               ))}
@@ -313,7 +313,7 @@ const AdminDashboard = () => {
                               <div>
                                 <h4 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
                                   <UserPlusIcon className="w-4 h-4 text-indigo-600" />
-                                  Available Clients
+                                  Available Students
                                 </h4>
                                 <div className="space-y-2 max-h-[300px] overflow-y-auto pr-2">
                                   {clients
