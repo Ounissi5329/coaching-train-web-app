@@ -12,7 +12,9 @@ const {
   addLesson,
   enrollCourse,
   getEnrolledCourses,
-  uploadCourseThumbnail
+  uploadCourseThumbnail,
+  assignCoach,
+  manageEnrollment
 } = require('../controllers/courseController');
 
 router.get('/', getCourses);
@@ -27,5 +29,9 @@ router.delete('/:id', protect, authorize('coach', 'admin'), deleteCourse);
 router.post('/:id/lessons', protect, authorize('coach', 'admin'), addLesson);
 router.post('/:id/enroll', protect, enrollCourse);
 router.post('/:id/thumbnail', protect, authorize('coach', 'admin'), upload.single('thumbnail'), uploadCourseThumbnail);
+
+// Admin only routes
+router.put('/:id/assign-coach', protect, authorize('admin'), assignCoach);
+router.put('/:id/manage-enrollment', protect, authorize('admin'), manageEnrollment);
 
 module.exports = router;

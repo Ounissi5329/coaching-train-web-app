@@ -220,3 +220,55 @@ exports.uploadCourseThumbnail = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+
+// @desc    Assign a coach to a course
+// @route   PUT /api/courses/:id/assign-coach
+// @access  Private/Admin
+exports.assignCoach = async (req, res) => {
+  try {
+    const { coachId } = req.body;
+    const course = await Course.findById(req.params.id);
+
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+
+    course.coach = coachId;
+    await course.save();
+
+    const updatedCourse = await Course.findById(course._id).populate('coach', 'firstName lastName avatar');
+    res.json(updatedCourse);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// @desc    Manage client enrollment (add/remove)
+// @route   PUT /api/courses/:id/manage-enrollment
+// @access  Private/Admin
+exports.manageEnrollment = async (req, res) => {
+  try {
+    const { clientId, action } = req.body; // action: 'add' or 'remove'
+    const course = await Course.findById(req.params.id);
+
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+
+    if (action === 'add') {
+      if (!course.enrolledStudents.includes(clientId)) {
+        course.enrolledStudents.push(clientId);
+      }
+    } else if (action === 'remove') {
+      course.enrolledStudents = course.enrolledStudents.filter(
+        id => id.toString() !== clientId.toString()
+      );
+    }
+
+    await course.save();
+    const updatedCourse = await Course.findById(course._id).populate('enrolledStudents', 'firstName lastName email avatar');
+    res.json(updatedCourse);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};

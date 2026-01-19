@@ -63,7 +63,9 @@ export const courseAPI = {
   enrollCourse: (id) => api.post(`/courses/${id}/enroll`),
   uploadThumbnail: (id, formData) => api.post(`/courses/${id}/thumbnail`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
-  })
+  }),
+  assignCoach: (id, coachId) => api.put(`/courses/${id}/assign-coach`, { coachId }),
+  manageEnrollment: (id, clientId, action) => api.put(`/courses/${id}/manage-enrollment`, { clientId, action })
 };
 
 export const sessionAPI = {
