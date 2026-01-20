@@ -16,7 +16,8 @@ const mediaSchema = new mongoose.Schema({
   },
   fileType: {
     type: String,
-    default: 'pdf'
+    enum: ['image', 'video', 'pdf', 'document'],
+    required: true
   },
   uploadedBy: {
     type: mongoose.Schema.Types.ObjectId,

@@ -12,7 +12,10 @@ exports.uploadMedia = async (req, res) => {
       title: title || req.file.originalname,
       description,
       fileUrl: `/uploads/${req.file.filename}`,
-      fileType: 'pdf',
+      fileType: req.file.mimetype.startsWith('image/') ? 'image' : 
+                req.file.mimetype.startsWith('video/') ? 'video' : 
+                req.file.mimetype === 'application/pdf' ? 'pdf' : 
+                'document',
       uploadedBy: req.user._id
     });
 

@@ -12,9 +12,10 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = /jpeg|jpg|png|gif|pdf|doc|docx|mp4|webm/;
-  const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = allowedTypes.test(file.mimetype);
+  const allowedExts = /jpeg|jpg|png|gif|pdf|doc|docx|mp4|webm/;
+  const allowedMimes = /image\/(jpeg|png|gif)|application\/(pdf|msword|vnd\.openxmlformats-officedocument\.wordprocessingml\.document)|video\/(mp4|webm)/;
+  const extname = allowedExts.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = allowedMimes.test(file.mimetype);
 
   if (extname && mimetype) {
     return cb(null, true);
