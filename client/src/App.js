@@ -14,6 +14,7 @@ import Coaches from './pages/Coaches';
 import CoachProfile from './pages/CoachProfile';
 import Courses from './pages/Courses';
 import CourseDetails from './pages/CourseDetails';
+import PDFPage from './pages/PDFPage';
 
 import ClientDashboard from './pages/client/ClientDashboard';
 import CoachDashboard from './pages/coach/CoachDashboard';
@@ -50,6 +51,7 @@ function App() {
             <Route path="/coaches/:id" element={<PublicLayout><CoachProfile /></PublicLayout>} />
             <Route path="/courses" element={<PublicLayout><Courses /></PublicLayout>} />
             <Route path="/courses/:id" element={<PublicLayout><CourseDetails /></PublicLayout>} />
+            <Route path="/pdf" element={<PublicLayout><PDFPage /></PublicLayout>} />
 
             {/* Student Routes */}
             <Route

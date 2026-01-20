@@ -14,6 +14,7 @@ const messageRoutes = require('./routes/messages');
 // const paymentRoutes = require('./routes/payments');
 const mediaRoutes = require("./routes/media");
 const commentRoutes = require("./routes/comments");
+const taskRoutes = require('./routes/tasks');
 
 const app = express();
 const server = http.createServer(app);
@@ -43,6 +44,7 @@ app.use('/api/messages', messageRoutes);
 // app.use('/api/payments', paymentRoutes);
 app.use("/api/media", mediaRoutes);
 app.use("/api/comments", commentRoutes);
+app.use('/api/tasks', taskRoutes);
 
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
