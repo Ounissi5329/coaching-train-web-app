@@ -4,6 +4,7 @@ import { courseAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import CommentSection from '../components/course/CommentSection';
+import PDFViewer from '../components/course/PDFViewer';
 import {
   AcademicCapIcon,
   ClockIcon,
@@ -25,6 +26,7 @@ const CourseDetails = () => {
   const [loading, setLoading] = useState(true);
   const [expandedLesson, setExpandedLesson] = useState(null);
   const [markingProgress, setMarkingProgress] = useState(null);
+  const [selectedPdf, setSelectedPdf] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -173,21 +175,22 @@ const CourseDetails = () => {
                               </h4>
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 {lesson.resources.map((res, i) => (
-                                  <a
+                                  <button
                                     key={i}
-                                    href={`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${res.fileUrl}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg hover:border-indigo-300 hover:shadow-sm transition-all group"
+                                    onClick={() => setSelectedPdf({
+                                      url: `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}${res.fileUrl}`,
+                                      title: res.title
+                                    })}
+                                    className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg hover:border-indigo-300 hover:shadow-sm transition-all group text-left w-full"
                                   >
                                     <div className="w-8 h-8 bg-indigo-50 text-indigo-600 rounded flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-colors">
                                       <DocumentIcon className="w-5 h-5" />
                                     </div>
                                     <div className="min-w-0 flex-1">
                                       <p className="text-xs font-medium text-gray-900 truncate">{res.title}</p>
-                                      <p className="text-[10px] text-gray-500">PDF Document</p>
+                                      <p className="text-[10px] text-gray-500">View PDF Document</p>
                                     </div>
-                                  </a>
+                                  </button>
                                 ))}
                               </div>
                             </div>
@@ -275,6 +278,13 @@ const CourseDetails = () => {
           </div>
         </div>
       </div>
+      {selectedPdf && (
+        <PDFViewer 
+          url={selectedPdf.url} 
+          title={selectedPdf.title} 
+          onClose={() => setSelectedPdf(null)} 
+        />
+      )}
     </div>
   );
 };
