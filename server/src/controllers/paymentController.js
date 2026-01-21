@@ -1,10 +1,10 @@
 const Stripe = require('stripe');
 const Booking = require('../models/Booking');
 const User = require('../models/User');
+const Course = require('../models/Course');
+const Progress = require('../models/Progress');
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
-const Course = require('../models/Course');
 
 exports.createPaymentIntent = async (req, res) => {
   try {
@@ -85,7 +85,36 @@ const Progress = require('../models/Progress');
 
 exports.confirmPayment = async (req, res) => {
   try {
-    const { paymentIntentId } = req.body;
+    const { paymentIntentId, amount, cardDetails } = req.body;
+
+    // Handle demo payments (for development/testing)
+    if (paymentIntentId.startsWith('demo_')) {
+      // For demo purposes, always treat as successful
+      const type = req.body.type || 'course'; // Default to course if not specified
+      const courseId = req.body.courseId;
+
+      if (type === 'course' && courseId) {
+        const course = await Course.findById(courseId);
+        if (course && !course.enrolledStudents.includes(req.user._id)) {
+          course.enrolledStudents.push(req.user._id);
+          await course.save();
+
+          await Progress.create({
+            client: req.user._id,
+            coach: course.coach,
+            course: courseId
+          });
+        }
+      }
+
+      return res.json({
+        success: true,
+        message: 'Demo payment confirmed',
+        demo: true
+      });
+    }
+
+    // Handle real Stripe payments
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
     if (paymentIntent.status === 'succeeded') {

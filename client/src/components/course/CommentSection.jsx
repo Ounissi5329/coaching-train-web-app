@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { commentAPI } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 import { toast } from 'react-hot-toast';
 import { 
   HandThumbUpIcon, 
@@ -18,6 +19,7 @@ import { formatDistanceToNow } from 'date-fns';
 
 const CommentSection = ({ courseId, lessonId }) => {
   const { user, isAuthenticated } = useAuth();
+  const { resolvedTheme } = useTheme();
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [replyingTo, setReplyingTo] = useState(null);
@@ -147,34 +149,34 @@ const CommentSection = ({ courseId, lessonId }) => {
           )}
         </div>
         <div className="flex-1">
-          <div className="bg-gray-50 p-4 rounded-2xl">
+          <div className="bg-gray-50 dark:bg-dark-700 p-4 rounded-2xl">
             <div className="flex justify-between items-start mb-1">
               <div>
-                <span className="font-bold text-gray-900 text-sm">
+                <span className="font-bold text-gray-900 dark:text-gray-100 text-sm">
                   {comment.user?.firstName} {comment.user?.lastName}
                 </span>
-	                <span className="ml-2 px-2 py-0.5 bg-gray-200 text-gray-600 rounded text-[10px] uppercase font-bold">
+	                <span className="ml-2 px-2 py-0.5 bg-gray-200 dark:bg-dark-600 text-gray-600 dark:text-gray-300 rounded text-[10px] uppercase font-bold">
 	                  {comment.user?.role === 'coach' ? 'Instructor' : comment.user?.role === 'client' ? 'Student' : comment.user?.role}
 	                </span>
               </div>
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-gray-500 dark:text-gray-400">
                 {formatDistanceToNow(new Date(comment.createdAt))} ago
               </span>
             </div>
-            <p className="text-gray-700 text-sm whitespace-pre-wrap">{comment.content}</p>
+            <p className="text-gray-700 dark:text-gray-300 text-sm whitespace-pre-wrap">{comment.content}</p>
           </div>
           
           <div className="flex items-center gap-4 mt-2 ml-2">
             <button 
               onClick={() => handleReaction(comment._id, 'like', isReply, parentId)}
-              className={`flex items-center gap-1 text-xs font-medium ${isLiked ? 'text-indigo-600' : 'text-gray-500 hover:text-indigo-600'}`}
+              className={`flex items-center gap-1 text-xs font-medium ${isLiked ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400'}`}
             >
               {isLiked ? <HandThumbUpSolid className="w-4 h-4" /> : <HandThumbUpIcon className="w-4 h-4" />}
               {comment.likes?.length || 0}
             </button>
             <button 
               onClick={() => handleReaction(comment._id, 'dislike', isReply, parentId)}
-              className={`flex items-center gap-1 text-xs font-medium ${isDisliked ? 'text-red-600' : 'text-gray-500 hover:text-red-600'}`}
+              className={`flex items-center gap-1 text-xs font-medium ${isDisliked ? 'text-red-600 dark:text-red-400' : 'text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400'}`}
             >
               {isDisliked ? <HandThumbDownSolid className="w-4 h-4" /> : <HandThumbDownIcon className="w-4 h-4" />}
               {comment.dislikes?.length || 0}
@@ -182,7 +184,7 @@ const CommentSection = ({ courseId, lessonId }) => {
             {!isReply && (
               <button 
                 onClick={() => setReplyingTo(replyingTo === comment._id ? null : comment._id)}
-                className="flex items-center gap-1 text-xs font-medium text-gray-500 hover:text-indigo-600"
+                className="flex items-center gap-1 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400"
               >
                 <ChatBubbleLeftIcon className="w-4 h-4" />
                 Reply
@@ -191,7 +193,7 @@ const CommentSection = ({ courseId, lessonId }) => {
             {canDelete && (
               <button 
                 onClick={() => handleDelete(comment._id, isReply, parentId)}
-                className="flex items-center gap-1 text-xs font-medium text-gray-500 hover:text-red-600"
+                className="flex items-center gap-1 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400"
               >
                 <TrashIcon className="w-4 h-4" />
                 Delete
@@ -206,9 +208,9 @@ const CommentSection = ({ courseId, lessonId }) => {
                 value={replyContent}
                 onChange={(e) => setReplyContent(e.target.value)}
                 placeholder="Write a reply..."
-                className="flex-1 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm focus:outline-none focus:border-indigo-500"
+                className="flex-1 bg-white dark:bg-dark-600 border border-gray-200 dark:border-dark-500 rounded-full px-4 py-2 text-sm focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
               />
-              <button type="submit" className="p-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700">
+              <button type="submit" className="p-2 bg-indigo-600 dark:bg-indigo-500 text-white rounded-full hover:bg-indigo-700 dark:hover:bg-indigo-600">
                 <PaperAirplaneIcon className="w-4 h-4" />
               </button>
             </form>
@@ -223,9 +225,9 @@ const CommentSection = ({ courseId, lessonId }) => {
   };
 
   return (
-    <div className="mt-12 border-t border-gray-100 pt-8">
-      <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-        <ChatBubbleLeftIcon className="w-6 h-6 text-indigo-600" />
+    <div className="mt-12 border-t border-gray-100 dark:border-dark-600 pt-8">
+      <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center gap-2">
+        <ChatBubbleLeftIcon className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
         Discussion ({comments.length})
       </h3>
 
@@ -235,7 +237,7 @@ const CommentSection = ({ courseId, lessonId }) => {
             {user?.avatar ? (
               <img src={user.avatar} alt="" className="w-10 h-10 rounded-full object-cover" />
             ) : (
-              <div className="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center text-white font-bold">
+              <div className="w-10 h-10 bg-indigo-600 dark:bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold">
                 {user?.firstName?.[0]}
               </div>
             )}
@@ -246,20 +248,21 @@ const CommentSection = ({ courseId, lessonId }) => {
               onChange={(e) => setNewComment(e.target.value)}
               placeholder="Add a comment..."
               rows="1"
-              className="flex-1 bg-gray-50 border border-transparent rounded-2xl px-4 py-3 text-sm focus:outline-none focus:bg-white focus:border-indigo-500 transition-all resize-none"
+              className="flex-1 bg-gray-50 dark:bg-dark-700 border border-transparent dark:border-dark-600 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:bg-white dark:focus:bg-dark-800 focus:border-indigo-500 dark:focus:border-indigo-400 transition-all resize-none text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
             />
             <button 
               type="submit" 
               disabled={!newComment.trim()}
-              className="px-6 bg-indigo-600 text-white rounded-2xl font-bold text-sm hover:bg-indigo-700 disabled:bg-gray-300 transition-colors"
+              className="px-6 bg-indigo-600 dark:bg-indigo-500 text-white rounded-2xl font-bold text-sm hover:bg-indigo-700 dark:hover:bg-indigo-400 disabled:bg-gray-300 dark:disabled:bg-dark-600 disabled:text-gray-500 dark:disabled:text-gray-400 transition-colors flex items-center gap-2"
             >
+              <PaperAirplaneIcon className="w-4 h-4" />
               Post
             </button>
           </div>
         </form>
       ) : (
-        <div className="bg-gray-50 p-6 rounded-2xl text-center mb-8">
-          <p className="text-gray-600 text-sm">Please <Link to="/login" className="text-indigo-600 font-bold hover:underline">login</Link> to join the discussion.</p>
+        <div className="bg-gray-50 dark:bg-dark-700 p-6 rounded-2xl text-center mb-8">
+          <p className="text-gray-600 dark:text-gray-300 text-sm">Please <Link to="/login" className="text-indigo-600 dark:text-indigo-400 font-bold hover:underline">login</Link> to join the discussion.</p>
         </div>
       )}
 

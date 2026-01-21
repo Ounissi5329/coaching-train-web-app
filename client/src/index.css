@@ -4,17 +4,25 @@
 
 @layer base {
   body {
-    @apply font-sans antialiased bg-gray-50 text-gray-900;
+    @apply font-sans antialiased bg-gray-50 text-gray-900 dark:bg-dark-900 dark:text-gray-100;
   }
 }
 
 @layer components {
+  /* Elevated surface tokens for dark mode */
+  .surface {
+    @apply bg-white border border-gray-100 dark:bg-dark-800 dark:border-dark-700 rounded-xl;
+  }
+  .surface-muted {
+    @apply bg-gray-50 border border-gray-100 dark:bg-dark-900 dark:border-dark-800 rounded-xl;
+  }
+
   .btn-primary {
-    @apply px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed dark:bg-primary-600 dark:hover:bg-primary-500;
   }
 
   .btn-secondary {
-    @apply px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200 font-medium;
+    @apply px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200 font-medium dark:bg-dark-800 dark:text-gray-200 dark:border-dark-700 dark:hover:bg-dark-700;
   }
 
   .btn-danger {
@@ -22,30 +30,135 @@
   }
 
   .input-field {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all duration-200;
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all duration-200 dark:bg-dark-900 dark:border-dark-700 dark:text-gray-100 dark:placeholder-gray-400;
   }
 
   .card {
-    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-6;
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-6 dark:bg-dark-800 dark:border-dark-700;
   }
 
   .sidebar-link {
-    @apply flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200;
+    @apply flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200 dark:text-gray-300 dark:hover:bg-dark-800 dark:hover:text-white;
   }
 
   .sidebar-link-active {
-    @apply flex items-center gap-3 px-4 py-3 rounded-lg bg-primary-50 text-primary-700 font-medium;
+    @apply flex items-center gap-3 px-4 py-3 rounded-lg bg-primary-50 text-primary-700 font-medium dark:bg-dark-800 dark:text-primary-300;
+  }
+
+  /* Additional dark mode utilities */
+  .bg-surface-secondary {
+    @apply bg-gray-50 dark:bg-dark-800;
+  }
+
+  .bg-surface-tertiary {
+    @apply bg-gray-100 dark:bg-dark-700;
+  }
+
+  .text-primary-dark {
+    @apply text-gray-900 dark:text-gray-100;
+  }
+
+  .text-secondary-dark {
+    @apply text-gray-600 dark:text-gray-300;
+  }
+
+  .text-muted-dark {
+    @apply text-gray-500 dark:text-gray-400;
+  }
+
+  .border-primary-dark {
+    @apply border-gray-100 dark:border-dark-700;
+  }
+
+  .bg-accent-blue {
+    @apply bg-blue-100 dark:bg-blue-900/30;
+  }
+
+  .bg-accent-purple {
+    @apply bg-purple-100 dark:bg-purple-900/30;
+  }
+
+  .bg-accent-green {
+    @apply bg-green-100 dark:bg-green-900/30;
+  }
+
+  .bg-accent-orange {
+    @apply bg-orange-100 dark:bg-orange-900/30;
+  }
+
+  .text-accent-blue {
+    @apply text-blue-600 dark:text-blue-400;
+  }
+
+  .text-accent-purple {
+    @apply text-purple-600 dark:text-purple-400;
+  }
+
+  .text-accent-green {
+    @apply text-green-600 dark:text-green-400;
+  }
+
+  .text-accent-orange {
+    @apply text-orange-600 dark:text-orange-400;
+  }
+
+  /* Custom select styling for dark mode */
+  .select-dark {
+    @apply bg-transparent text-gray-900 dark:text-gray-100;
+  }
+
+  .select-dark option {
+    @apply bg-white text-gray-900 dark:bg-dark-800 dark:text-gray-100;
   }
 }
 
+/* Headings and text utilities for better contrast in dark mode */
+.h-text {
+  @apply text-gray-900 dark:text-gray-100;
+}
+.muted-text {
+  @apply text-gray-600 dark:text-gray-400;
+}
+
 .rbc-calendar {
-  @apply bg-white rounded-xl shadow-sm p-4;
+  @apply bg-white rounded-xl shadow-sm p-4 dark:bg-dark-800;
 }
 
 .rbc-header {
-  @apply py-3 font-medium text-gray-600;
+  @apply py-3 font-medium text-gray-600 dark:text-gray-300;
 }
 
 .rbc-event {
   @apply bg-primary-600 rounded-md;
+}
+
+/* Lesson notes styling */
+.lesson-notes img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 8px 0;
+  display: block;
+}
+
+.lesson-notes ul {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.lesson-notes ol {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.lesson-notes li {
+  margin: 0.25rem 0;
+}
+
+.lesson-notes ul li {
+  list-style-type: disc;
+}
+
+.lesson-notes ol li {
+  list-style-type: decimal;
 }

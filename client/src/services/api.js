@@ -74,8 +74,11 @@ export const sessionAPI = {
   getSessions: (params) => api.get('/sessions', { params }),
   getSessionById: (id) => api.get(`/sessions/${id}`),
   getCoachSessions: () => api.get('/sessions/my-sessions'),
+  getUpcomingSessions: () => api.get('/sessions/upcoming'),
   createSession: (data) => api.post('/sessions', data),
+  createCourseSession: (data) => api.post('/sessions/course-session', data),
   updateSession: (id, data) => api.put(`/sessions/${id}`, data),
+  updateSessionTasks: (id, tasks) => api.put(`/sessions/${id}/tasks`, { tasks }),
   deleteSession: (id) => api.delete(`/sessions/${id}`)
 };
 

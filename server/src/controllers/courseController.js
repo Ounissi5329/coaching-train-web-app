@@ -131,18 +131,24 @@ exports.addLesson = async (req, res) => {
       return res.status(404).json({ message: 'Course not found' });
     }
 
-    if (course.coach.toString() !== req.user._id.toString()) {
+    // Allow admins to add lessons to any course, but coaches can only add to their own courses
+    if (req.user.role !== 'admin' && course.coach.toString() !== req.user._id.toString()) {
       return res.status(403).json({ message: 'Not authorized' });
     }
 
-    const { title, description, content, videoUrl, duration, resources } = req.body;
+    const { title, description, content, notes, videoUrl, duration, resources } = req.body;
+
+    if (!title || title.trim() === '') {
+      return res.status(400).json({ message: 'Lesson title is required' });
+    }
 
     course.lessons.push({
-      title,
-      description,
-      content,
-      videoUrl,
-      duration,
+      title: title.trim(),
+      description: description?.trim() || '',
+      content: content?.trim() || '',
+      notes: notes?.trim() || '',
+      videoUrl: videoUrl?.trim() || '',
+      duration: duration || 0,
       resources: resources || [],
       order: course.lessons.length
     });
@@ -167,6 +173,8 @@ exports.enrollCourse = async (req, res) => {
       return res.status(400).json({ message: 'Already enrolled in this course' });
     }
 
+    // For paid courses, we assume payment has been processed via the payment modal
+    // In a production app, you'd want to verify the payment status here
     course.enrolledStudents.push(req.user._id);
     await course.save();
 

@@ -9,7 +9,7 @@ const {
 } = require('../controllers/mediaController');
 
 router.get('/', getAllMedia);
-router.post('/upload', protect, authorize('admin'), upload.single('pdf'), uploadMedia);
+router.post('/upload', protect, upload.single('file'), uploadMedia);
 router.delete('/:id', protect, authorize('admin'), deleteMedia);
 
 module.exports = router;

@@ -6,6 +6,10 @@ const sessionSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
+  course: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Course'
+  },
   title: {
     type: String,
     required: [true, 'Session title is required']
@@ -15,23 +19,39 @@ const sessionSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['one-on-one', 'group'],
+    enum: ['one-on-one', 'group', 'course-session'],
     default: 'one-on-one'
+  },
+  scheduledDate: {
+    type: Date
   },
   duration: {
     type: Number,
     required: true,
     default: 60
   },
-  price: {
-    type: Number,
-    required: true,
-    default: 0
-  },
   maxParticipants: {
     type: Number,
     default: 1
   },
+  participants: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  status: {
+    type: String,
+    enum: ['scheduled', 'completed', 'cancelled'],
+    default: 'scheduled'
+  },
+  tasks: [{
+    title: String,
+    description: String,
+    completed: {
+      type: Boolean,
+      default: false
+    },
+    dueDate: Date
+  }],
   category: {
     type: String,
     required: true

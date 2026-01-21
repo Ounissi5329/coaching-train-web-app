@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { userAPI } from '../services/api';
+import { useTheme } from '../context/ThemeContext';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import {
   MagnifyingGlassIcon,
@@ -10,6 +11,7 @@ import {
 import { StarIcon as StarSolid } from '@heroicons/react/24/solid';
 
 const Coaches = () => {
+  const { resolvedTheme } = useTheme();
   const [coaches, setCoaches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -51,16 +53,16 @@ const Coaches = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-dark-900 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Find Your Perfect Coach</h1>
-          <p className="mt-2 text-gray-600">Browse our network of certified professionals</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Find Your Perfect Coach</h1>
+          <p className="mt-2 text-gray-600 dark:text-gray-300">Browse our network of certified professionals</p>
         </div>
 
         {/* Search and Filters */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-8">
+        <div className="bg-white dark:bg-dark-800 rounded-xl shadow-sm border border-gray-100 dark:border-dark-700 p-4 mb-8">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1 relative">
               <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -84,7 +86,7 @@ const Coaches = () => {
           {showFilters && (
             <div className="mt-4 pt-4 border-t border-gray-100 grid md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                   Specialization
                 </label>
                 <select
@@ -99,7 +101,7 @@ const Coaches = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                   Min Rate ($/hr)
                 </label>
                 <input
@@ -111,7 +113,7 @@ const Coaches = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                   Max Rate ($/hr)
                 </label>
                 <input
@@ -131,7 +133,7 @@ const Coaches = () => {
           <LoadingSpinner size="lg" className="mt-20" />
         ) : filteredCoaches.length === 0 ? (
           <div className="text-center py-16">
-            <p className="text-gray-500 text-lg">No coaches found matching your criteria</p>
+            <p className="text-gray-500 dark:text-gray-400 text-lg">No coaches found matching your criteria</p>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -149,14 +151,14 @@ const Coaches = () => {
                       className="w-16 h-16 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center">
-                      <span className="text-primary-600 font-semibold text-xl">
+                    <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                      <span className="text-primary-600 dark:text-primary-300 font-semibold text-xl">
                         {coach.firstName?.[0]}{coach.lastName?.[0]}
                       </span>
                     </div>
                   )}
                   <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 group-hover:text-primary-600 transition-colors">
                       {coach.firstName} {coach.lastName}
                     </h3>
                     <div className="flex items-center gap-1 mt-1">
@@ -167,27 +169,27 @@ const Coaches = () => {
                           <StarIcon key={i} className="w-4 h-4 text-gray-300" />
                         )
                       ))}
-                      <span className="text-sm text-gray-500 ml-1">(24 reviews)</span>
+                      <span className="text-sm text-gray-500 dark:text-gray-400 ml-1">(24 reviews)</span>
                     </div>
                   </div>
                 </div>
 
-                <p className="mt-4 text-gray-600 text-sm line-clamp-2">
+                <p className="mt-4 text-gray-600 dark:text-gray-300 text-sm line-clamp-2">
                   {coach.bio || 'Experienced coach helping clients achieve their goals through personalized guidance and support.'}
                 </p>
 
                 <div className="mt-4 flex flex-wrap gap-2">
                   {(coach.specializations || ['Life Coaching']).slice(0, 3).map((spec, i) => (
-                    <span key={i} className="px-2 py-1 bg-gray-100 text-gray-600 rounded-md text-xs">
+                    <span key={i} className="px-2 py-1 bg-gray-100 dark:bg-dark-700 text-gray-600 dark:text-gray-300 rounded-md text-xs">
                       {spec}
                     </span>
                   ))}
                 </div>
 
-                <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+                <div className="mt-4 pt-4 border-t border-gray-100 dark:border-dark-700 flex items-center justify-between">
                   <div>
-                    <span className="text-2xl font-bold text-gray-900">${coach.hourlyRate || 75}</span>
-                    <span className="text-gray-500">/hour</span>
+                    <span className="text-2xl font-bold text-gray-900 dark:text-gray-100">${coach.hourlyRate || 75}</span>
+                    <span className="text-gray-500 dark:text-gray-400">/hour</span>
                   </div>
                   <span className="btn-primary text-sm">View Profile</span>
                 </div>

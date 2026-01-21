@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
@@ -18,6 +19,7 @@ import PDFPage from './pages/PDFPage';
 
 import ClientDashboard from './pages/client/ClientDashboard';
 import CoachDashboard from './pages/coach/CoachDashboard';
+import CoachSessions from './pages/coach/CoachSessions';
 import AdminDashboard from './pages/admin/AdminDashboard';
 
 import VideoCall from './components/video/VideoCall';
@@ -40,9 +42,10 @@ const DashboardLayout = ({ children }) => (
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <div className="min-h-screen flex flex-col">
-          <Routes>
+      <ThemeProvider>
+        <Router>
+          <div className="min-h-screen flex flex-col">
+            <Routes>
             {/* Public Routes */}
             <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
             <Route path="/login" element={<Login />} />
@@ -72,6 +75,14 @@ function App() {
             />
 
             {/* Instructor Routes */}
+            <Route
+              path="/coach/sessions/new"
+              element={
+                <ProtectedRoute allowedRoles={['coach']}>
+                  <DashboardLayout><CoachSessions /></DashboardLayout>
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/instructor/dashboard"
               element={
@@ -141,6 +152,7 @@ function App() {
           }}
         />
       </Router>
+      </ThemeProvider>
     </AuthProvider>
   );
 }

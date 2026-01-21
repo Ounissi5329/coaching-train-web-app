@@ -42,22 +42,22 @@ const Sidebar = () => {
   const links = user?.role === 'coach' ? coachLinks : clientLinks;
 
   return (
-    <aside className="w-64 bg-white border-r border-gray-100 min-h-screen fixed left-0 top-16 overflow-y-auto">
+    <aside className="w-64 bg-white dark:bg-dark-900 border-r border-gray-100 dark:border-dark-800 min-h-screen fixed left-0 top-16 overflow-y-auto">
       <div className="p-4">
-        <div className="mb-6 p-4 bg-gray-50 rounded-xl">
+        <div className="mb-6 p-4 bg-gray-50 dark:bg-dark-800 rounded-xl border border-transparent dark:border-dark-700">
           <div className="flex items-center gap-3">
             {user?.avatar ? (
               <img src={user.avatar} alt="" className="w-10 h-10 rounded-full object-cover" />
             ) : (
-              <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
-                <span className="text-primary-600 font-medium">
+              <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center">
+                <span className="text-primary-600 dark:text-primary-300 font-medium">
                   {user?.firstName?.[0]}{user?.lastName?.[0]}
                 </span>
               </div>
             )}
             <div>
-              <p className="font-medium text-gray-900">{user?.firstName} {user?.lastName}</p>
-              <p className="text-sm text-gray-500 capitalize">{user?.role === 'coach' ? 'Instructor' : user?.role === 'client' ? 'Student' : user?.role}</p>
+              <p className="font-medium text-gray-900 dark:text-gray-100">{user?.firstName} {user?.lastName}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 capitalize">{user?.role === 'coach' ? 'Instructor' : user?.role === 'client' ? 'Student' : user?.role}</p>
             </div>
           </div>
         </div>

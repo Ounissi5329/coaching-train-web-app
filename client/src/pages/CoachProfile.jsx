@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { userAPI, sessionAPI, bookingAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import toast from 'react-hot-toast';
 import {
@@ -18,6 +19,7 @@ const CoachProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuth();
+  const { resolvedTheme } = useTheme();
   const [coach, setCoach] = useState(null);
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -104,7 +106,7 @@ const CoachProfile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
+      <div className="min-h-screen bg-gray-50 dark:bg-dark-900 py-8">
         <LoadingSpinner size="lg" className="mt-20" />
       </div>
     );
@@ -113,7 +115,7 @@ const CoachProfile = () => {
   if (!coach) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-dark-900 py-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
@@ -128,14 +130,14 @@ const CoachProfile = () => {
                     className="w-32 h-32 rounded-xl object-cover"
                   />
                 ) : (
-                  <div className="w-32 h-32 bg-primary-100 rounded-xl flex items-center justify-center">
-                    <span className="text-primary-600 font-bold text-4xl">
+                  <div className="w-32 h-32 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center">
+                    <span className="text-primary-600 dark:text-primary-300 font-bold text-4xl">
                       {coach.firstName?.[0]}{coach.lastName?.[0]}
                     </span>
                   </div>
                 )}
                 <div className="flex-1">
-                  <h1 className="text-2xl font-bold text-gray-900">
+                  <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                     {coach.firstName} {coach.lastName}
                   </h1>
                   <div className="flex items-center gap-1 mt-2">
@@ -146,11 +148,11 @@ const CoachProfile = () => {
                         <StarIcon key={i} className="w-5 h-5 text-gray-300" />
                       )
                     ))}
-                    <span className="text-gray-600 ml-2">4.8 (124 reviews)</span>
+                    <span className="text-gray-600 dark:text-gray-300 ml-2">4.8 (124 reviews)</span>
                   </div>
                   <div className="flex flex-wrap gap-2 mt-4">
                     {(coach.specializations || ['Life Coaching']).map((spec, i) => (
-                      <span key={i} className="px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-sm">
+                      <span key={i} className="px-3 py-1 bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-full text-sm">
                         {spec}
                       </span>
                     ))}
@@ -161,17 +163,17 @@ const CoachProfile = () => {
 
             {/* About */}
             <div className="card">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">About</h2>
-              <p className="text-gray-600 leading-relaxed">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">About</h2>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                 {coach.bio || 'Experienced coach dedicated to helping clients achieve their personal and professional goals. With years of experience in coaching and mentorship, I provide personalized guidance tailored to your unique needs and aspirations.'}
               </p>
             </div>
 
             {/* Sessions */}
             <div className="card">
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">Available Sessions</h2>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Available Sessions</h2>
               {sessions.length === 0 ? (
-                <p className="text-gray-500">No sessions available at the moment.</p>
+                <p className="text-gray-500 dark:text-gray-400">No sessions available at the moment.</p>
               ) : (
                 <div className="space-y-4">
                   {sessions.map((session) => (
@@ -179,16 +181,16 @@ const CoachProfile = () => {
                       key={session._id}
                       className={`p-4 border-2 rounded-xl cursor-pointer transition-all ${
                         selectedSession?._id === session._id
-                          ? 'border-primary-500 bg-primary-50'
-                          : 'border-gray-100 hover:border-gray-200'
+                          ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
+                          : 'border-gray-100 dark:border-dark-600 hover:border-gray-200 dark:hover:border-dark-500 bg-white dark:bg-dark-800'
                       }`}
                       onClick={() => setSelectedSession(session)}
                     >
                       <div className="flex items-center justify-between">
                         <div>
-                          <h3 className="font-semibold text-gray-900">{session.title}</h3>
-                          <p className="text-sm text-gray-500 mt-1">{session.description}</p>
-                          <div className="flex items-center gap-4 mt-2 text-sm text-gray-500">
+                          <h3 className="font-semibold text-gray-900 dark:text-gray-100">{session.title}</h3>
+                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{session.description}</p>
+                          <div className="flex items-center gap-4 mt-2 text-sm text-gray-500 dark:text-gray-400">
                             <span className="flex items-center gap-1">
                               <ClockIcon className="w-4 h-4" />
                               {session.duration} min
@@ -197,9 +199,9 @@ const CoachProfile = () => {
                           </div>
                         </div>
                         <div className="text-right">
-                          <p className="text-xl font-bold text-gray-900">${session.price}</p>
+                          <p className="text-xl font-bold text-gray-900 dark:text-gray-100">${session.price}</p>
                           {selectedSession?._id === session._id && (
-                            <CheckCircleIcon className="w-6 h-6 text-primary-600 ml-auto mt-2" />
+                            <CheckCircleIcon className="w-6 h-6 text-primary-600 dark:text-primary-400 ml-auto mt-2" />
                           )}
                         </div>
                       </div>
@@ -214,8 +216,8 @@ const CoachProfile = () => {
           <div className="lg:col-span-1">
             <div className="card sticky top-24">
               <div className="text-center mb-6">
-                <p className="text-3xl font-bold text-gray-900">${coach.hourlyRate || 75}</p>
-                <p className="text-gray-500">per hour</p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-gray-100">${coach.hourlyRate || 75}</p>
+                <p className="text-gray-500 dark:text-gray-400">per hour</p>
               </div>
 
               <button
@@ -232,15 +234,15 @@ const CoachProfile = () => {
                 Send Message
               </button>
 
-              <div className="mt-6 pt-6 border-t border-gray-100">
-                <h3 className="font-medium text-gray-900 mb-3">Availability</h3>
+              <div className="mt-6 pt-6 border-t border-gray-100 dark:border-dark-600">
+                <h3 className="font-medium text-gray-900 dark:text-gray-100 mb-3">Availability</h3>
                 <div className="space-y-2 text-sm">
                   {(coach.availability || [
                     { day: 'monday', startTime: '09:00', endTime: '17:00' },
                     { day: 'wednesday', startTime: '09:00', endTime: '17:00' },
                     { day: 'friday', startTime: '09:00', endTime: '17:00' }
                   ]).map((slot, i) => (
-                    <div key={i} className="flex justify-between text-gray-600">
+                    <div key={i} className="flex justify-between text-gray-600 dark:text-gray-300">
                       <span className="capitalize">{slot.day}</span>
                       <span>{slot.startTime} - {slot.endTime}</span>
                     </div>
@@ -255,13 +257,13 @@ const CoachProfile = () => {
       {/* Booking Modal */}
       {showBookingModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-dark-800 rounded-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Book a Session</h2>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">Book a Session</h2>
 
               {/* Session Selection */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Select Session Type
                 </label>
                 <select
@@ -280,7 +282,7 @@ const CoachProfile = () => {
 
               {/* Date Selection */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Select Date
                 </label>
                 <div className="grid grid-cols-4 gap-2">
@@ -291,7 +293,7 @@ const CoachProfile = () => {
                       className={`p-2 rounded-lg text-center transition-colors ${
                         selectedDate === date.toISOString()
                           ? 'bg-primary-600 text-white'
-                          : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                          : 'bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-gray-700 dark:text-gray-200'
                       }`}
                     >
                       <div className="text-xs">{format(date, 'EEE')}</div>
@@ -303,7 +305,7 @@ const CoachProfile = () => {
 
               {/* Time Selection */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Select Time
                 </label>
                 <div className="grid grid-cols-4 gap-2 max-h-40 overflow-y-auto">
@@ -314,7 +316,7 @@ const CoachProfile = () => {
                       className={`p-2 rounded-lg text-center transition-colors ${
                         selectedTime === time
                           ? 'bg-primary-600 text-white'
-                          : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                          : 'bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 text-gray-700 dark:text-gray-200'
                       }`}
                     >
                       {time}
@@ -325,14 +327,14 @@ const CoachProfile = () => {
 
               {/* Summary */}
               {selectedSession && selectedDate && selectedTime && (
-                <div className="mb-6 p-4 bg-gray-50 rounded-xl">
-                  <h3 className="font-medium text-gray-900 mb-2">Booking Summary</h3>
-                  <div className="text-sm text-gray-600 space-y-1">
+                <div className="mb-6 p-4 bg-gray-50 dark:bg-dark-700 rounded-xl">
+                  <h3 className="font-medium text-gray-900 dark:text-gray-100 mb-2">Booking Summary</h3>
+                  <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
                     <p><span className="font-medium">Session:</span> {selectedSession.title}</p>
                     <p><span className="font-medium">Date:</span> {format(new Date(selectedDate), 'MMMM d, yyyy')}</p>
                     <p><span className="font-medium">Time:</span> {selectedTime}</p>
                     <p><span className="font-medium">Duration:</span> {selectedSession.duration} minutes</p>
-                    <p className="text-lg font-bold text-gray-900 mt-2">Total: ${selectedSession.price}</p>
+                    <p className="text-lg font-bold text-gray-900 dark:text-gray-100 mt-2">Total: ${selectedSession.price}</p>
                   </div>
                 </div>
               )}

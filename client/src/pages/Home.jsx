@@ -101,22 +101,22 @@ const Home = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-gray-50 dark:bg-dark-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900">Everything You Need to Succeed</h2>
-            <p className="mt-4 text-lg text-gray-600">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Everything You Need to Succeed</h2>
+            <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
               Our platform provides all the tools for effective coaching and learning
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
               <div key={index} className="card hover:shadow-md transition-shadow">
-                <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center mb-4">
-                  <feature.icon className="w-6 h-6 text-primary-600" />
+                <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-xl flex items-center justify-center mb-4">
+                  <feature.icon className="w-6 h-6 text-primary-600 dark:text-primary-300" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{feature.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -124,11 +124,11 @@ const Home = () => {
       </section>
 
       {/* How It Works */}
-      <section className="py-20">
+      <section className="py-20 bg-white dark:bg-dark-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900">How It Works</h2>
-            <p className="mt-4 text-lg text-gray-600">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">How It Works</h2>
+            <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
               Getting started is simple
             </p>
           </div>
@@ -137,33 +137,33 @@ const Home = () => {
               <div className="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-2xl font-bold text-white">1</span>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Find Your Instructor</h3>
-              <p className="text-gray-600">Browse our network of certified instructors and find the perfect match for your goals.</p>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Find Your Instructor</h3>
+              <p className="text-gray-600 dark:text-gray-300">Browse our network of certified instructors and find the perfect match for your goals.</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-2xl font-bold text-white">2</span>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Book a Session</h3>
-              <p className="text-gray-600">Schedule sessions at times that work for you.</p>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Book a Session</h3>
+              <p className="text-gray-600 dark:text-gray-300">Schedule sessions at times that work for you.</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center mx-auto mb-6">
                 <span className="text-2xl font-bold text-white">3</span>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Achieve Your Goals</h3>
-              <p className="text-gray-600">Work with your instructor to reach your full potential. Track your progress along the way.</p>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">Achieve Your Goals</h3>
+              <p className="text-gray-600 dark:text-gray-300">Work with your instructor to reach your full potential. Track your progress along the way.</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-gray-50 dark:bg-dark-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900">What Our Users Say</h2>
-            <p className="mt-4 text-lg text-gray-600">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">What Our Users Say</h2>
+            <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
               Join thousands of satisfied clients
             </p>
           </div>
@@ -177,11 +177,11 @@ const Home = () => {
                     className="w-12 h-12 rounded-full object-cover"
                   />
                   <div>
-                    <div className="font-semibold text-gray-900">{testimonial.name}</div>
-                    <div className="text-sm text-gray-500">{testimonial.role}</div>
+                    <div className="font-semibold text-gray-900 dark:text-gray-100">{testimonial.name}</div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">{testimonial.role}</div>
                   </div>
                 </div>
-                <p className="text-gray-600 italic">"{testimonial.content}"</p>
+                <p className="text-gray-600 dark:text-gray-300 italic">"{testimonial.content}"</p>
               </div>
             ))}
           </div>
