@@ -5,6 +5,8 @@ import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 
 import Navbar from './components/common/Navbar';
+import CountdownTimer from './components/common/CountdownTimer';
+import ChatWidget from './components/chat/ChatWidget';
 import Footer from './components/common/Footer';
 import ProtectedRoute from './components/common/ProtectedRoute';
 
@@ -27,7 +29,9 @@ import VideoCall from './components/video/VideoCall';
 const PublicLayout = ({ children }) => (
   <>
     <Navbar />
+    <CountdownTimer />
     {children}
+    <ChatWidget />
     <Footer />
   </>
 );
@@ -35,7 +39,9 @@ const PublicLayout = ({ children }) => (
 const DashboardLayout = ({ children }) => (
   <>
     <Navbar />
+    <CountdownTimer />
     {children}
+    <ChatWidget />
   </>
 );
 

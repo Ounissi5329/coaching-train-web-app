@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+
 import {
   HomeIcon,
   CalendarIcon,
@@ -17,6 +18,7 @@ import {
 const Sidebar = () => {
   const { user } = useAuth();
   const location = useLocation();
+
 
   const clientLinks = [
     { name: 'Dashboard', href: '/student/dashboard', icon: HomeIcon },
@@ -65,6 +67,7 @@ const Sidebar = () => {
         <nav className="space-y-1">
           {links.map((link) => {
             const isActive = location.pathname === link.href;
+
             return (
               <Link
                 key={link.name}

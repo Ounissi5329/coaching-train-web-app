@@ -122,4 +122,9 @@ export const commentAPI = {
   deleteComment: (id) => api.delete(`/comments/${id}`)
 };
 
+export const settingsAPI = {
+  getSettings: (key) => api.get(`/settings/${key}`),
+  updateSettings: (key, value) => api.put(`/settings/${key}`, { value })
+};
+
 export default api;

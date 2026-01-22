@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline';
+
 const Footer = () => {
+
   return (
     <footer className="bg-secondary-900 text-gray-300 border-t border-secondary-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -33,6 +36,7 @@ const Footer = () => {
             <ul className="space-y-2">
               <li><Link to="/help" className="text-sm hover:text-white">Help Center</Link></li>
               <li><Link to="/contact" className="text-sm hover:text-white">Contact Us</Link></li>
+              <li><Link to="/contact" className="text-sm hover:text-white">Live Chat</Link></li>
               <li><Link to="/faq" className="text-sm hover:text-white">FAQ</Link></li>
             </ul>
           </div>
