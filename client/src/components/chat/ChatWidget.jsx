@@ -25,25 +25,50 @@ const ChatWidget = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [totalUnreadCount, setTotalUnreadCount] = useState(0);
   const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchUnreadCount();
+      const socket = initSocket();
+      onReceiveMessage((data) => {
+        if (selectedConv && data.conversationId === selectedConv.conversationId) {
+          setMessages(prev => [...prev, data]);
+          // If chat is open and we are in the conversation, mark as read
+          if (isOpen && !isMinimized && view === 'chat') {
+            messageAPI.markAsRead(data.conversationId);
+          }
+        }
+        
+        if (!isOpen || isMinimized || (view === 'chat' && selectedConv?.conversationId !== data.conversationId) || view !== 'chat') {
+          fetchUnreadCount();
+        }
+        
+        fetchConversations();
+      });
+    }
+  }, [isAuthenticated, isOpen, isMinimized, view, selectedConv]);
 
   useEffect(() => {
     if (isAuthenticated && isOpen) {
       fetchConversations();
       fetchContacts();
-      const socket = initSocket();
-      onReceiveMessage((data) => {
-        if (selectedConv && data.conversationId === selectedConv.conversationId) {
-          setMessages(prev => [...prev, data]);
-        }
-        fetchConversations();
-      });
     }
-  }, [isAuthenticated, isOpen, selectedConv]);
+  }, [isAuthenticated, isOpen]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  const fetchUnreadCount = async () => {
+    try {
+      const response = await messageAPI.getUnreadCount();
+      setTotalUnreadCount(response.data.unreadCount);
+    } catch (error) {
+      console.error('Error fetching unread count:', error);
+    }
+  };
 
   const fetchConversations = async () => {
     try {
@@ -90,6 +115,8 @@ const ChatWidget = () => {
       });
       
       joinRoom(convId);
+      // Refresh unread count after opening a conversation
+      fetchUnreadCount();
     } catch (error) {
       console.error('Error starting chat:', error);
     } finally {
@@ -130,7 +157,14 @@ const ChatWidget = () => {
         onClick={() => setIsOpen(true)}
         className="fixed bottom-6 right-6 bg-primary-600 text-white p-4 rounded-full shadow-lg hover:bg-primary-700 transition-all z-50 flex items-center gap-2"
       >
-        <ChatBubbleLeftRightIcon className="w-6 h-6" />
+        <div className="relative">
+          <ChatBubbleLeftRightIcon className="w-6 h-6" />
+          {totalUnreadCount > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">
+              {totalUnreadCount}
+            </span>
+          )}
+        </div>
         <span className="font-medium">Chat</span>
       </button>
     );
@@ -148,9 +182,16 @@ const ChatWidget = () => {
               </svg>
             </button>
           )}
-          <h2 className="font-bold text-sm truncate">
-            {isMinimized ? 'Chat' : (view === 'chat' ? `${selectedConv?.otherUser?.firstName} ${selectedConv?.otherUser?.lastName}` : 'Messages')}
-          </h2>
+          <div className="relative">
+            <h2 className="font-bold text-sm truncate">
+              {isMinimized ? 'Chat' : (view === 'chat' ? `${selectedConv?.otherUser?.firstName} ${selectedConv?.otherUser?.lastName}` : 'Messages')}
+            </h2>
+            {isMinimized && totalUnreadCount > 0 && (
+              <span className="absolute -top-2 -right-4 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-primary-600">
+                {totalUnreadCount}
+              </span>
+            )}
+          </div>
         </div>
         <div className="flex items-center gap-1">
           <button onClick={(e) => { e.stopPropagation(); setIsMinimized(!isMinimized); }} className="p-1 hover:bg-primary-700 rounded">
@@ -270,7 +311,7 @@ const ChatWidget = () => {
                     </div>
                   ) : (
                     messages.map((msg, idx) => {
-                      const isOwn = msg.sender._id === user._id || msg.sender === user._id;
+                      const isOwn = msg.sender._id === user._id;
                       return (
                         <div key={msg._id || idx} className={`flex ${isOwn ? 'justify-end' : 'justify-start'}`}>
                           <div className={`max-w-[85%] p-2 rounded-xl text-xs ${

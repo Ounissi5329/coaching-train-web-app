@@ -2,13 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
+import { messageAPI } from '../../services/api';
+import { initSocket, onReceiveMessage } from '../../services/socket';
 import {
   Bars3Icon,
   XMarkIcon,
   UserCircleIcon,
   ArrowRightOnRectangleIcon,
   MoonIcon,
-  SunIcon
+  SunIcon,
+  ChatBubbleLeftRightIcon,
+  ComputerDesktopIcon
 } from '@heroicons/react/24/outline';
 
 const Navbar = () => {
@@ -18,6 +22,7 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [themeMenuOpen, setThemeMenuOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   // Close menus when clicking outside
   useEffect(() => {
@@ -33,6 +38,25 @@ const Navbar = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchUnreadCount();
+      initSocket();
+      onReceiveMessage(() => {
+        fetchUnreadCount();
+      });
+    }
+  }, [isAuthenticated]);
+
+  const fetchUnreadCount = async () => {
+    try {
+      const response = await messageAPI.getUnreadCount();
+      setUnreadCount(response.data.unreadCount);
+    } catch (error) {
+      console.error('Error fetching unread count:', error);
+    }
+  };
 
   const handleLogout = () => {
     logout();
@@ -64,9 +88,6 @@ const Navbar = () => {
               <Link to="/courses" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 text-sm font-medium">
                 Courses
               </Link>
-{/* <Link to="/pricing" className="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium">
-                Pricing
-              </Link> */}
             </div>
           </div>
 
@@ -104,6 +125,23 @@ const Navbar = () => {
                 </div>
               )}
             </div>
+
+            {isAuthenticated && (
+              <div className="relative">
+                <button
+                  className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-800 focus:outline-none focus:ring-2 focus:ring-primary-500/40 relative"
+                  aria-label="Messages"
+                >
+                  <ChatBubbleLeftRightIcon className="w-6 h-6" />
+                  {unreadCount > 0 && (
+                    <span className="absolute top-1 right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white dark:border-dark-900">
+                      {unreadCount}
+                    </span>
+                  )}
+                </button>
+              </div>
+            )}
+
             {isAuthenticated ? (
               <div className="relative">
                 <button
@@ -225,9 +263,6 @@ const Navbar = () => {
             <Link to="/courses" className="block px-3 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-secondary-800 rounded-lg">
               Courses
             </Link>
-{/* <Link to="/pricing" className="block px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg">
-              Pricing
-            </Link> */}
             <hr className="my-2" />
             {isAuthenticated ? (
               <>
